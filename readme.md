@@ -289,7 +289,7 @@ apikey=0123456789abcdefghijklmnopqrstuvwxyz
 > sending your agent to someone else to run, don't include your API key. They
 > should provide their own key.
 
-Now you can modify your `on_choice` method to use an LLM to make a random choice
+Now you can modify your `onChoice(Status)` method to use an LLM to make a random choice
 like this:
 ```
 @Override
