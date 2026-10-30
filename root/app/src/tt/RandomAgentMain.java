@@ -17,7 +17,7 @@ public class RandomAgentMain {
 	/** The authors of this agent */
 	public static final String AUTHORS = "Stephen G. Ware";
 	
-	/** The full title of the this agent */
+	/** The full title of this agent */
 	public static final String TITLE = NAME + " v" + VERSION + " by " + AUTHORS;
 	
 	/** The key used to print the usage instructions */
@@ -26,7 +26,7 @@ public class RandomAgentMain {
 	/** The key used to specify the server to connect to */
 	public static final String URL_KEY = "url";
 	
-	/** The key used to specify the network port to the server connect on */
+	/** The key used to specify the network port to connect to the server on */
 	public static final String PORT_KEY = "port";
 	
 	/** Instructions for how to use this agent */
