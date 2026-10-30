@@ -108,9 +108,9 @@ Now it's time to start changing the code. The random agent is pretty simple. In
 fact, it's [just three files](root/app/src/tt)!
 
 The only method a Tandem Tales
-[client](https://sgware.github.io/tt-server/edu/uky/cs/nil/tt/Client.html)
+[client](http://sgware.github.io/tt-client-java/edu/uky/cs/nil/tt/Client.html)
 *needs* to implement is
-[`onChoice(Status)`](https://sgware.github.io/tt-server/edu/uky/cs/nil/tt/Client.html#onChoice(edu.uky.cs.nil.tt.world.Status)).
+[`onChoice(Status)`](http://sgware.github.io/tt-client-java/edu/uky/cs/nil/tt/Client.html#onChoice(edu.uky.cs.nil.tt.world.Status))).
 Every time it is your agent's turn in the story, this method gets called. The
 `status` object has
 [a ton of useful information](https://sgware.github.io/tt-server/edu/uky/cs/nil/tt/world/Status.html)
@@ -164,9 +164,9 @@ demand.
 
 Good news! Almost all of that code is already written for you. All you have to
 do is extend
-[`edu.uky.cs.nil.tt.ClientFactory`](https://sgware.github.io/tt-server/edu/uky/cs/nil/tt/ClientFactory.html)
+[`edu.uky.cs.nil.tt.ClientFactory`](http://sgware.com/tt-client-java/edu/uky/cs/nil/tt/ClientFactory.html)
 and implement the
-[`create()`](https://sgware.github.io/tt-server/edu/uky/cs/nil/tt/ClientFactory.html#create())
+[`create()`](http://sgware.com/tt-client-java/edu/uky/cs/nil/tt/ClientFactory.html#create())
 method like this:
 ```
 @Override
@@ -201,24 +201,24 @@ called at important moments in the agent's life that you might find helpful.
 
 For example, if your agent needs to load some resource before it joins the
 server, you could do that in the
-[`onConnect(Connect)`](https://sgware.github.io/tt-server/edu/uky/cs/nil/tt/Client.html#onConnect(edu.uky.cs.nil.tt.io.Connect))
+[`onConnect(Connect)`](http://sgware.github.io/tt-client-java/edu/uky/cs/nil/tt/Client.html#onConnect(edu.uky.cs.nil.tt.io.Connect))
 method which runs after opening the connection but before waiting for a partner.
 If you need to clean up that resource before the agent stops, override
-[`onDisconnect()`](https://sgware.github.io/tt-server/edu/uky/cs/nil/tt/Client.html#onDisconnect()).
+[`onDisconnect()`](https://sgware.github.io/tt-client-java/edu/uky/cs/nil/tt/Client.html#onDisconnect()).
 If your agent can play in any story world, you might want to override the
-[`onStart(World, Role, State)`](https://sgware.github.io/tt-server/edu/uky/cs/nil/tt/Client.html#onStart(edu.uky.cs.nil.tt.world.World,edu.uky.cs.nil.tt.Role,edu.uky.cs.nil.tt.world.State))
+[`onStart(World, Role, State)`](https://sgware.github.io/tt-client-java/edu/uky/cs/nil/tt/Client.html#onStart(edu.uky.cs.nil.tt.world.World,edu.uky.cs.nil.tt.Role,edu.uky.cs.nil.tt.world.State))
 method, which runs as soon as the agent's session starts and tells you all the
 details of the story world, your agent's role, and the starting state of the
 world.
 
 Got a resource you need to load once and share across all agents? Load it in
 your factory's
-[`onStart()`](https://sgware.github.io/tt-server/edu/uky/cs/nil/tt/ClientFactory.html#onStart())
+[`onStart()`](https://sgware.github.io/tt-client-java/edu/uky/cs/nil/tt/ClientFactory.html#onStart())
 method and clean it up in
-[`onStop()`](https://sgware.github.io/tt-server/edu/uky/cs/nil/tt/ClientFactory.html#onStop()).
+[`onStop()`](https://sgware.github.io/tt-client-java/edu/uky/cs/nil/tt/ClientFactory.html#onStop()).
 
 Check out the
-[Tandem Tales Server](https://sgware.github.io/tt-server/) library for
+[Tandem Tales Client (Java)](https://sgware.github.io/tt-client-java/) library for
 documentation on the factory and agent lifecycles.
 
 ### Adding and Changing Files
