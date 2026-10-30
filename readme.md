@@ -47,7 +47,10 @@ docker compose up
 ```
 Then open a web browser and go to [http://localhost](http://localhost) to see a
 local version of the Tandem Tales website running on your computer where you can
-play an interactive story with this agent.
+play an interactive story with this agent. You will likely see a security
+warning because the traffic is encrypted with a self-signed certificate. It is
+safe to ignore this warning because everything is running locally on your
+computer.
 
 ## Make This Agent Your Own
 
@@ -70,7 +73,7 @@ You also need to set this new name in the environment variable file
 name="random"
 ```
 You should also change the `title` and `description` variables to something that
-better fit your new agent.
+better fits your new agent.
 
 Now stop the container (`ctrl+C` in the terminal, or use the stop button in the
 GUI). Rebuild your image and start it back up with one line:
@@ -259,6 +262,68 @@ computer. Now type this to recompile your code and start the factory back up:
 ./compile.sh
 ./run.dev.sh
 ```
+
+### Using the External API
+
+Does your agent need to use a Large Language Model (LLM)? Modern LLMs are too
+large to pack into a container and too slow to run without a high-end GPU.
+Tandem Tales agents come with a built-in way to use an external LLM for
+expensive operations like text embedding and chat completion, but first you
+will need an [API Key](https://en.wikipedia.org/wiki/API_key), which is like a
+user name and password all in one.
+
+Currently, Tandem Tales uses the [OpenRouter](https://openrouter.ai) API, which
+means you'll need to create an account on that website, follow the instructions
+to get an API key (which is a long string of random letters and numbers), and
+set up some way to pay for usage.
+
+You can tell your agent about your API key by setting the `apikey` environment
+variable in [`.env`](.env):
+```
+apikey=0123456789abcdefghijklmnopqrstuvwxyz
+```
+> [!WARNING]
+> Never share your API key! Never hard-code an API key into your agent's source
+> code. If you set your key in the `.env` file, never commit that file to a
+> public repository like GitHub, and never send the file to others. If you are
+> sending your agent to someone else to run, don't include your API key. They
+> should provide their own key.
+
+Now you can modify your `on_choice` method to use an LLM to make a random choice
+like this:
+```
+@Override
+protected int onChoice(Status status) {
+    int count = status.getChoices().size();
+    String prompt = "Choose a number between 0 and " + (count - 1) + " inclusive.";
+    String response = external.complete(prompt);
+    return Integer.parseInt(response);
+}
+```
+
+But watch out! This code assumes you'll get just an integer back as the
+response, but you might get something like `"I choose 3"`. Your code will need
+to handle those cases.
+
+Check out the
+[Tandem Tales Java Client documentation](http://sgware.com/tt-client-java/edu/uky/cs/nil/tt/ExternalAPI.html)
+to see all the options available in the external API.
+
+### Publishing and Distributing Your Agent
+
+We recommend that you publish the source code and instructions for how to run
+your agent to a public repository like [GitHub.com](https://github.com).
+
+If you want to send your agent to someone else (for example, if you want to send
+it to the maintainers of [tandemtales.net](https://tandemtales.net)) you can
+package it into a file by going to the project's root directory and running:
+```
+docker save -o random.tar tt-random-agent-java:latest
+```
+This will create a file call `random.tar` that you can send to others. The file
+does not include the configuration information in [`compose.yaml`](compose.yaml)
+or [`.env`](.env), so make sure to document any settings needed to run your
+agent.
 
 ## Version History
 
