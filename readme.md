@@ -64,7 +64,7 @@ private RandomAgent(String url, int port, Random random, long delay) {
 ```
 Change the string `"random"` to your agent's new name.
 
-You also need to set this new name name in the environment variable file
+You also need to set this new name in the environment variable file
 [`.env`](.env). Change the line that looks like this:
 ```
 name="random"
@@ -106,7 +106,7 @@ fact, it's [just three files](root/app/src/tt)!
 
 The only method a Tandem Tales
 [client](https://sgware.github.io/tt-server/edu/uky/cs/nil/tt/Client.html)
-*needs* to implements is
+*needs* to implement is
 [`onChoice(Status)`](https://sgware.github.io/tt-server/edu/uky/cs/nil/tt/Client.html#onChoice(edu.uky.cs.nil.tt.world.Status)).
 Every time it is your agent's turn in the story, this method gets called. The
 `status` object has
@@ -154,7 +154,7 @@ protected int onChoice(Status status) {
 ```
 
 Now take a look at
-[`RandomAgentFactory.java](root/app/src/tt/RandomAgentFactory.java). An agent
+[`RandomAgentFactory.java`](root/app/src/tt/RandomAgentFactory.java). An agent
 only plays one story session and then closes. If you want to be able to play
 with your agent more than once, you need a factory that makes new agents on
 demand.
@@ -196,7 +196,7 @@ The only methods you *need* to implement are `onChoice(Status)` in your agent
 and `create()` in your factory. But there's a bunch of other methods that get
 called at important moments in the agent's life that you might find helpful.
 
-For example, if your agent need to load some resource before it joins the
+For example, if your agent needs to load some resource before it joins the
 server, you could do that in the
 [`onConnect(Connect)`](https://sgware.github.io/tt-server/edu/uky/cs/nil/tt/Client.html#onConnect(edu.uky.cs.nil.tt.io.Connect))
 method which runs after opening the connection but before waiting for a partner.
@@ -228,7 +228,7 @@ COPY ./root /
 That line copies all the files and directories in this project's [`root`](root)
 folder into the container's root `/` directory. So if you add the file
 `root/app/src/Utility.java` to this project, you'll find it at
-`/app/src/Utility.py` in the container. If you add
+`/app/src/Utility.java` in the container. If you add
 `root/usr/local/bin/script.sh` to this project, you'll find it at
 `/usr/local/bin/script.sh` in the container.
 
