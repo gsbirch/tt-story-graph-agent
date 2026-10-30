@@ -16,7 +16,7 @@ The [Docker image](Dockerfile) in this project defines a
 [container](https://www.docker.com/resources/what-container/) (basically a
 lightweight virtual machine) that has the
 [Java Development Kit](https://www.oracle.com/java/technologies/downloads/), the
-[Tandem Tales Java library](https://github.com/sgware/tt-server), and
+[Tandem Tales Java library](https://github.com/sgware/tt-client-java), and
 [the code for this agent](root/app/src/tt) already installed. Docker makes it
 easy to package your agent so others can easily run it without worrying about
 dependencies, versions numbers, etc.
@@ -164,9 +164,9 @@ demand.
 
 Good news! Almost all of that code is already written for you. All you have to
 do is extend
-[`edu.uky.cs.nil.tt.ClientFactory`](http://sgware.com/tt-client-java/edu/uky/cs/nil/tt/ClientFactory.html)
+[`edu.uky.cs.nil.tt.ClientFactory`](http://sgware.github.io/tt-client-java/edu/uky/cs/nil/tt/ClientFactory.html)
 and implement the
-[`create()`](http://sgware.com/tt-client-java/edu/uky/cs/nil/tt/ClientFactory.html#create())
+[`create()`](http://sgware.github.io/tt-client-java/edu/uky/cs/nil/tt/ClientFactory.html#create())
 method like this:
 ```
 @Override
@@ -306,7 +306,7 @@ response, but you might get something like `"I choose 3"`. Your code will need
 to handle those cases.
 
 Check out the
-[Tandem Tales Java Client documentation](http://sgware.com/tt-client-java/edu/uky/cs/nil/tt/ExternalAPI.html)
+[Tandem Tales Java Client documentation](http://sgware.github.io/tt-client-java/edu/uky/cs/nil/tt/ExternalAPI.html)
 to see all the options available in the external API.
 
 ### Publishing and Distributing Your Agent
