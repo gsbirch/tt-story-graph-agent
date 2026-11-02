@@ -230,8 +230,8 @@ COPY ./root /
 ```
 That line copies all the files and directories in this project's [`root`](root)
 folder into the container's root `/` directory. So if you add the file
-`root/app/src/Utility.java` to this project, you'll find it at
-`/app/src/Utility.java` in the container. If you add
+`root/app/src/tt/Utility.java` to this project, you'll find it at
+`/app/src/tt/Utility.java` in the container. If you add
 `root/usr/local/bin/script.sh` to this project, you'll find it at
 `/usr/local/bin/script.sh` in the container.
 
