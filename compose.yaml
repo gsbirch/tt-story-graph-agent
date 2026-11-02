@@ -36,7 +36,7 @@ services:
     tty: true
   # Tandem Tales server configuration
   server:
-    image: tt-web
+    image: sgware/tt-web
     # Configure the server's environment variables.
     environment:
       # Add an agent with these values to the database.
