@@ -11,7 +11,7 @@
 # Base Phase
 # The instructions in this section always run.
 #-------------------------------------------------------------------------------
-# Start with Linux that has Python already installed.
+# Start with Linux that has Java already installed.
 FROM eclipse-temurin:26-jdk-resolute AS base
 
 # Update packages.

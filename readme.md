@@ -16,7 +16,7 @@ The [Docker image](Dockerfile) in this project defines a
 [container](https://www.docker.com/resources/what-container/) (basically a
 lightweight virtual machine) that has the
 [Java Development Kit](https://www.oracle.com/java/technologies/downloads/), the
-[Tandem Tales Java library](https://github.com/sgware/tt-server), and
+[Tandem Tales Java library](https://github.com/sgware/tt-client-java), and
 [the code for this agent](root/app/src/tt) already installed. Docker makes it
 easy to package your agent so others can easily run it without worrying about
 dependencies, versions numbers, etc.
@@ -47,7 +47,10 @@ docker compose up
 ```
 Then open a web browser and go to [http://localhost](http://localhost) to see a
 local version of the Tandem Tales website running on your computer where you can
-play an interactive story with this agent.
+play an interactive story with this agent. You will likely see a security
+warning because the traffic is encrypted with a self-signed certificate. It is
+safe to ignore this warning because everything is running locally on your
+computer.
 
 ## Make This Agent Your Own
 
@@ -64,13 +67,13 @@ private RandomAgent(String url, int port, Random random, long delay) {
 ```
 Change the string `"random"` to your agent's new name.
 
-You also need to set this new name name in the environment variable file
+You also need to set this new name in the environment variable file
 [`.env`](.env). Change the line that looks like this:
 ```
 name="random"
 ```
 You should also change the `title` and `description` variables to something that
-better fit your new agent.
+better fits your new agent.
 
 Now stop the container (`ctrl+C` in the terminal, or use the stop button in the
 GUI). Rebuild your image and start it back up with one line:
@@ -105,9 +108,9 @@ Now it's time to start changing the code. The random agent is pretty simple. In
 fact, it's [just three files](root/app/src/tt)!
 
 The only method a Tandem Tales
-[client](https://sgware.github.io/tt-server/edu/uky/cs/nil/tt/Client.html)
-*needs* to implements is
-[`onChoice(Status)`](https://sgware.github.io/tt-server/edu/uky/cs/nil/tt/Client.html#onChoice(edu.uky.cs.nil.tt.world.Status)).
+[client](http://sgware.github.io/tt-client-java/edu/uky/cs/nil/tt/Client.html)
+*needs* to implement is
+[`onChoice(Status)`](http://sgware.github.io/tt-client-java/edu/uky/cs/nil/tt/Client.html#onChoice(edu.uky.cs.nil.tt.world.Status))).
 Every time it is your agent's turn in the story, this method gets called. The
 `status` object has
 [a ton of useful information](https://sgware.github.io/tt-server/edu/uky/cs/nil/tt/world/Status.html)
@@ -154,16 +157,16 @@ protected int onChoice(Status status) {
 ```
 
 Now take a look at
-[`RandomAgentFactory.java](root/app/src/tt/RandomAgentFactory.java). An agent
+[`RandomAgentFactory.java`](root/app/src/tt/RandomAgentFactory.java). An agent
 only plays one story session and then closes. If you want to be able to play
 with your agent more than once, you need a factory that makes new agents on
 demand.
 
 Good news! Almost all of that code is already written for you. All you have to
 do is extend
-[`edu.uky.cs.nil.tt.ClientFactory`](https://sgware.github.io/tt-server/edu/uky/cs/nil/tt/ClientFactory.html)
+[`edu.uky.cs.nil.tt.ClientFactory`](http://sgware.github.io/tt-client-java/edu/uky/cs/nil/tt/ClientFactory.html)
 and implement the
-[`create()`](https://sgware.github.io/tt-server/edu/uky/cs/nil/tt/ClientFactory.html#create())
+[`create()`](http://sgware.github.io/tt-client-java/edu/uky/cs/nil/tt/ClientFactory.html#create())
 method like this:
 ```
 @Override
@@ -196,26 +199,26 @@ The only methods you *need* to implement are `onChoice(Status)` in your agent
 and `create()` in your factory. But there's a bunch of other methods that get
 called at important moments in the agent's life that you might find helpful.
 
-For example, if your agent need to load some resource before it joins the
+For example, if your agent needs to load some resource before it joins the
 server, you could do that in the
-[`onConnect(Connect)`](https://sgware.github.io/tt-server/edu/uky/cs/nil/tt/Client.html#onConnect(edu.uky.cs.nil.tt.io.Connect))
+[`onConnect(Connect)`](http://sgware.github.io/tt-client-java/edu/uky/cs/nil/tt/Client.html#onConnect(edu.uky.cs.nil.tt.io.Connect))
 method which runs after opening the connection but before waiting for a partner.
 If you need to clean up that resource before the agent stops, override
-[`onDisconnect()`](https://sgware.github.io/tt-server/edu/uky/cs/nil/tt/Client.html#onDisconnect()).
+[`onDisconnect()`](https://sgware.github.io/tt-client-java/edu/uky/cs/nil/tt/Client.html#onDisconnect()).
 If your agent can play in any story world, you might want to override the
-[`onStart(World, Role, State)`](https://sgware.github.io/tt-server/edu/uky/cs/nil/tt/Client.html#onStart(edu.uky.cs.nil.tt.world.World,edu.uky.cs.nil.tt.Role,edu.uky.cs.nil.tt.world.State))
+[`onStart(World, Role, State)`](https://sgware.github.io/tt-client-java/edu/uky/cs/nil/tt/Client.html#onStart(edu.uky.cs.nil.tt.world.World,edu.uky.cs.nil.tt.Role,edu.uky.cs.nil.tt.world.State))
 method, which runs as soon as the agent's session starts and tells you all the
 details of the story world, your agent's role, and the starting state of the
 world.
 
 Got a resource you need to load once and share across all agents? Load it in
 your factory's
-[`onStart()`](https://sgware.github.io/tt-server/edu/uky/cs/nil/tt/ClientFactory.html#onStart())
+[`onStart()`](https://sgware.github.io/tt-client-java/edu/uky/cs/nil/tt/ClientFactory.html#onStart())
 method and clean it up in
-[`onStop()`](https://sgware.github.io/tt-server/edu/uky/cs/nil/tt/ClientFactory.html#onStop()).
+[`onStop()`](https://sgware.github.io/tt-client-java/edu/uky/cs/nil/tt/ClientFactory.html#onStop()).
 
 Check out the
-[Tandem Tales Server](https://sgware.github.io/tt-server/) library for
+[Tandem Tales Client (Java)](https://sgware.github.io/tt-client-java/) library for
 documentation on the factory and agent lifecycles.
 
 ### Adding and Changing Files
@@ -228,7 +231,7 @@ COPY ./root /
 That line copies all the files and directories in this project's [`root`](root)
 folder into the container's root `/` directory. So if you add the file
 `root/app/src/Utility.java` to this project, you'll find it at
-`/app/src/Utility.py` in the container. If you add
+`/app/src/Utility.java` in the container. If you add
 `root/usr/local/bin/script.sh` to this project, you'll find it at
 `/usr/local/bin/script.sh` in the container.
 
@@ -259,6 +262,68 @@ computer. Now type this to recompile your code and start the factory back up:
 ./compile.sh
 ./run.dev.sh
 ```
+
+### Using the External API
+
+Does your agent need to use a Large Language Model (LLM)? Modern LLMs are too
+large to pack into a container and too slow to run without a high-end GPU.
+Tandem Tales agents come with a built-in way to use an external LLM for
+expensive operations like text embedding and chat completion, but first you
+will need an [API Key](https://en.wikipedia.org/wiki/API_key), which is like a
+user name and password all in one.
+
+Currently, Tandem Tales uses the [OpenRouter](https://openrouter.ai) API, which
+means you'll need to create an account on that website, follow the instructions
+to get an API key (which is a long string of random letters and numbers), and
+set up some way to pay for usage.
+
+You can tell your agent about your API key by setting the `apikey` environment
+variable in [`.env`](.env):
+```
+apikey=0123456789abcdefghijklmnopqrstuvwxyz
+```
+> [!WARNING]
+> Never share your API key! Never hard-code an API key into your agent's source
+> code. If you set your key in the `.env` file, never commit that file to a
+> public repository like GitHub, and never send the file to others. If you are
+> sending your agent to someone else to run, don't include your API key. They
+> should provide their own key.
+
+Now you can modify your `onChoice(Status)` method to use an LLM to make a random choice
+like this:
+```
+@Override
+protected int onChoice(Status status) {
+    int count = status.getChoices().size();
+    String prompt = "Choose a number between 0 and " + (count - 1) + " inclusive.";
+    String response = external.complete(prompt);
+    return Integer.parseInt(response);
+}
+```
+
+But watch out! This code assumes you'll get just an integer back as the
+response, but you might get something like `"I choose 3"`. Your code will need
+to handle those cases.
+
+Check out the
+[Tandem Tales Java Client documentation](http://sgware.github.io/tt-client-java/edu/uky/cs/nil/tt/ExternalAPI.html)
+to see all the options available in the external API.
+
+### Publishing and Distributing Your Agent
+
+We recommend that you publish the source code and instructions for how to run
+your agent to a public repository like [GitHub.com](https://github.com).
+
+If you want to send your agent to someone else (for example, if you want to send
+it to the maintainers of [tandemtales.net](https://tandemtales.net)) you can
+package it into a file by going to the project's root directory and running:
+```
+docker save -o random.tar tt-random-agent-java:latest
+```
+This will create a file call `random.tar` that you can send to others. The file
+does not include the configuration information in [`compose.yaml`](compose.yaml)
+or [`.env`](.env), so make sure to document any settings needed to run your
+agent.
 
 ## Version History
 

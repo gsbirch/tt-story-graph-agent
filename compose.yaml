@@ -11,7 +11,7 @@ services:
     build:
       # Use the Dockerfile in this directory.
       context: .
-      # Target the 'dev' stage inthe Dockerfile.
+      # Target the 'dev' stage in the Dockerfile.
       target: dev
     # Wait for the server to start before starting this agent.
     depends_on:
