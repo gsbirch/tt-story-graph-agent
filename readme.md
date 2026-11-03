@@ -293,7 +293,7 @@ Now you can modify your `onChoice(Status)` method to use an LLM to make a random
 like this:
 ```
 @Override
-protected int onChoice(Status status) {
+protected int onChoice(Status status) throws Exception {
     int count = status.getChoices().size();
     String prompt = "Choose a number between 0 and " + (count - 1) + " inclusive.";
     String response = external.complete(prompt);
