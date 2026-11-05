@@ -1,5 +1,6 @@
 package tt;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.io.File;
@@ -8,7 +9,6 @@ import edu.uky.cs.nil.sg.StoryGraph;
 import edu.uky.cs.nil.tt.*;
 import edu.uky.cs.nil.tt.io.*;
 import edu.uky.cs.nil.tt.world.*;
-import edu.uky.cs.nil.tt.Role;
 
 /**
  * A Tandem Tales agent that makes random choices. This agent can play as either
@@ -116,18 +116,37 @@ public class StoryGraphAgent extends Client {
 	@Override
 	protected void onStart(World world, Role role, State state) {
 		System.out.println(this + " has started its session as the " + role + " in world \"" + world.getName() + "\".");
-		sgv = new StoryGraphView("tutorial.zip");
+		sgv = new StoryGraphView("tutorial.zip", "tutorial-player-decision.zip", world.getActions());
 	}
 	
 	@Override
 	protected int onChoice(Status status) {
-		Action toTake = sgv.recommendAction(getHistory(), getRole());
+		System.out.print("My possible actions are: ");
+        for (var act : status.getChoices()) {
+            System.out.print(act + ", ");
+        }
+        System.out.println("");
+		if (isProposal(status))
+			return sgv.allowProposal(cleanHistory(), getRole(), getHistory().get(getHistory().size() - 1));
+		Action toTake = sgv.recommendAction(cleanHistory(), getRole());
 		int i = 0;
 		for (;i < getChoices().size(); i++) {
 			Turn candidate = getChoices().get(i);
 			if (candidate.action.equals(toTake)) break;
 		}
+		System.out.println();
 		return i;
+	}
+
+	private List<Turn> cleanHistory() {
+		List<Turn> clean = new ArrayList<Turn>();
+		for (var t : getHistory()) {
+			System.out.println(t);
+			if (t.type.equals(Turn.Type.SUCCEED)) {
+				clean.add(t);
+			}
+		}
+		return clean;
 	}
 	
 	/**
