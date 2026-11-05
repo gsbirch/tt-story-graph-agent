@@ -6,16 +6,16 @@ import edu.uky.cs.nil.tt.Arguments;
  * The main entry point for this Tandem Tales agent. This class includes the
  * {@link #main(String[]) main method} to launch the agent factory.
  */
-public class RandomAgentMain {
+public class StoryGraphAgentMain {
 	
 	/** The name of this agent */
-	public static final String NAME = "Tandem Tales Random Agent (Java)";
+	public static final String NAME = "Tandem Tales Story Graph Agent (Java)";
 	
 	/** The version number of this agent */
 	public static final String VERSION = "0.9.0";
 	
 	/** The authors of this agent */
-	public static final String AUTHORS = "Stephen G. Ware";
+	public static final String AUTHORS = "Gage Birchmeier";
 	
 	/** The full title of this agent */
 	public static final String TITLE = NAME + " v" + VERSION + " by " + AUTHORS;
@@ -32,8 +32,8 @@ public class RandomAgentMain {
 	/** Instructions for how to use this agent */
 	public static final String USAGE = 
 		rpad("-" + HELP_KEY) + "Print usage information.\n" +
-		rpad("-" + URL_KEY + " <string>") + "Specifies the URL of the server (defaults to \"" + RandomAgent.DEFAULT_URL + "\").\n" +
-		rpad("-" + PORT_KEY + " <number>") + "Specifies the network port of the server (defaults to " + RandomAgent.DEFAULT_PORT + ").";
+		rpad("-" + URL_KEY + " <string>") + "Specifies the URL of the server (defaults to \"" + StoryGraphAgent.DEFAULT_URL + "\").\n" +
+		rpad("-" + PORT_KEY + " <number>") + "Specifies the network port of the server (defaults to " + StoryGraphAgent.DEFAULT_PORT + ").";
 	
 	private static final String rpad(String string) {
 		return String.format("%-16s", string);
@@ -56,23 +56,23 @@ public class RandomAgentMain {
 			return;
 		}
 		// Network Settings
-		String url = arguments.getValue(URL_KEY, RandomAgent.DEFAULT_URL);
+		String url = arguments.getValue(URL_KEY, StoryGraphAgent.DEFAULT_URL);
 		if(url == null)
-			url = RandomAgent.DEFAULT_URL;
+			url = StoryGraphAgent.DEFAULT_URL;
 		int port;
 		if(arguments.contains(PORT_KEY))
-			port = Integer.parseInt(arguments.getValue(PORT_KEY, Integer.toString(RandomAgent.DEFAULT_PORT)));
+			port = Integer.parseInt(arguments.getValue(PORT_KEY, Integer.toString(StoryGraphAgent.DEFAULT_PORT)));
 		else
-			port = RandomAgent.DEFAULT_PORT;
+			port = StoryGraphAgent.DEFAULT_PORT;
 		// Check for unused arguments.
 		arguments.checkUnused();
 		// Create Agent Factory
-		try(RandomAgentFactory factory = new RandomAgentFactory(url, port)) {
+		try(StoryGraphAgentFactory factory = new StoryGraphAgentFactory(url, port)) {
 			factory.call();
 		}
 	}
 	
-	private RandomAgentMain() {
+	private StoryGraphAgentMain() {
 		// This object cannot be instantiated.
 	}
 }

@@ -21,8 +21,11 @@ RUN apt install -y git
 
 # Install the Tandem Tales Java Client library from GitHub.
 RUN git clone https://github.com/sgware/tt-client-java.git /tmp/tt-client-java
+# Install the Story Graph library from GitHub.
+RUN git clone https://github.com/sgware/story-graph.git /tmp/story-graph
 RUN mkdir -p /opt/tt
 RUN cp /tmp/tt-client-java/build/jar/tt-client-java.jar /opt/tt/tt-client-java.jar
+RUN cp /tmp/story-graph/build/jar/story-graph.jar /opt/tt/story-graph.jar
 RUN rm -rf /tmp/*
 
 # Uninstall software and clean up.

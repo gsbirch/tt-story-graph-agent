@@ -7,7 +7,7 @@
 services:
   # Java agent configuration
   agent:
-    image: tt-random-agent-java
+    image: tt-story-graph-java
     build:
       # Use the Dockerfile in this directory.
       context: .

@@ -2,10 +2,13 @@ package tt;
 
 import java.util.List;
 import java.util.Random;
+import java.io.File;
 
+import edu.uky.cs.nil.sg.StoryGraph;
 import edu.uky.cs.nil.tt.*;
 import edu.uky.cs.nil.tt.io.*;
 import edu.uky.cs.nil.tt.world.*;
+import edu.uky.cs.nil.tt.Role;
 
 /**
  * A Tandem Tales agent that makes random choices. This agent can play as either
@@ -22,7 +25,7 @@ import edu.uky.cs.nil.tt.world.*;
  * the impression that it is thinking. If the delay is set to 0, the agent will
  * take turns with no delay.
  */
-public class RandomAgent extends Client {
+public class StoryGraphAgent extends Client {
 	
 	/** Probability that this agent will pass control to its partner */
 	private static final double PASS_PROBABILITY = 0.3;
@@ -59,8 +62,8 @@ public class RandomAgent extends Client {
 	 * @param random the pseudo-random number generator used to make decisions
 	 * @param delay the max milliseconds to wait before taking a turn
 	 */
-	private RandomAgent(String url, int port, Random random, long delay) {
-		super("random", null, null, null, url, port);
+	private StoryGraphAgent(String url, int port, Random random, long delay) {
+		super("storygraph", null, null, null, url, port);
 		this.random = random;
 		this.delay = delay;
 	}
@@ -74,7 +77,7 @@ public class RandomAgent extends Client {
 	 * makes decisions
 	 * @param delay the max milliseconds to wait before taking a turn
 	 */
-	public RandomAgent(String url, int port, long seed, long delay) {
+	public StoryGraphAgent(String url, int port, long seed, long delay) {
 		this(url, port, new Random(seed), delay);
 	}
 	
@@ -85,7 +88,7 @@ public class RandomAgent extends Client {
 	 * @param url the URL of the server to connect to
 	 * @param port the network port to connect to the server on
 	 */
-	public RandomAgent(String url, int port) {
+	public StoryGraphAgent(String url, int port) {
 		this(url, port, new Random(), DEFAULT_DELAY);
 	}
 	
@@ -93,13 +96,13 @@ public class RandomAgent extends Client {
 	 * Creates a new random agent with a random starting seed and default
 	 * settings.
 	 */
-	public RandomAgent() {
+	public StoryGraphAgent() {
 		this(DEFAULT_URL, DEFAULT_PORT, new Random(), DEFAULT_DELAY);
 	}
 	
 	@Override
 	public String toString() {
-		return "Random Agent " + id;
+		return "Story Graph Agent " + id;
 	}
 	
 	@Override
@@ -110,6 +113,13 @@ public class RandomAgent extends Client {
 	@Override
 	protected void onStart(World world, Role role, State state) {
 		System.out.println(this + " has started its session as the " + role + " in world \"" + world.getName() + "\".");
+		File f = new File("tutorial.zip");
+		try {
+			StoryGraph sg = StoryGraph.from(f);
+		}
+		catch (Exception e) {
+			System.out.println("Unable to open the story graph");
+		}
 	}
 	
 	@Override
