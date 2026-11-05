@@ -53,6 +53,9 @@ public class StoryGraphAgent extends Client {
 	
 	/** The random number generator used to make decisions */
 	private final Random random;
+
+	/** A helpful interface to the used story graph. */
+	public StoryGraphView sgv;
 	
 	/**
 	 * Creates a new random agent with the given settings.
@@ -113,47 +116,18 @@ public class StoryGraphAgent extends Client {
 	@Override
 	protected void onStart(World world, Role role, State state) {
 		System.out.println(this + " has started its session as the " + role + " in world \"" + world.getName() + "\".");
-		File f = new File("tutorial.zip");
-		try {
-			StoryGraph sg = StoryGraph.from(f);
-		}
-		catch (Exception e) {
-			System.out.println("Unable to open the story graph");
-		}
+		sgv = new StoryGraphView("tutorial.zip");
 	}
 	
 	@Override
 	protected int onChoice(Status status) {
-		int choice;
-		// If my partner has proposed a move, accept or reject it.
-		if(isProposal(status)) {
-			if(random.nextDouble() < SUCCEED_PROBABILITY)
-				choice = 0; // succeed
-			else
-				choice = 1; // fail
+		Action toTake = sgv.recommendAction(getHistory(), getRole());
+		int i = 0;
+		for (;i < getChoices().size(); i++) {
+			Turn candidate = getChoices().get(i);
+			if (candidate.action.equals(toTake)) break;
 		}
-		// If this is a normal turn and the agent has at least one choice...
-		else if(status.getChoices().size() > 1) {
-			// Decide if I will act or pass.
-			if(random.nextDouble() < PASS_PROBABILITY)
-				choice = status.getChoices().size() - 1; // pass
-			else
-				choice = random.nextInt(status.getChoices().size() - 1); // act
-		}
-		// If the agent has no choices, pass.
-		else
-			choice = 0;
-		// Wait a random amount of time before sending the choice.
-		try {
-			if(delay > 0)
-				Thread.sleep(random.nextLong(delay));
-		}
-		catch(InterruptedException exception) {
-			// If interrupted, return choice immediately.
-		}
-		// Return the choice.
-		System.out.println(this + " chooses: \"" + status.getChoices().get(choice).getDescription() + "\".");
-		return choice;
+		return i;
 	}
 	
 	/**
