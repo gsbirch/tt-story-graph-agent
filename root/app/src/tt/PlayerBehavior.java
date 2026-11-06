@@ -103,10 +103,10 @@ public class PlayerBehavior {
         // So those actions needed to added manually
         // System.out.println(coffeeLoc);
         // System.out.println(state.get(coffeeLoc));
-        if (state.get(coffeeLoc).equals(baristaVal) && !sgActions.contains(findActionSG(BREW_COFFEE))) {
+        if (!state.get(coffeeLoc).equals(null) && !sgActions.contains(findActionSG(BREW_COFFEE))) {
             sgActions.add(0, findActionSG(BREW_COFFEE));
         }
-        if (state.get(teaLoc).equals(baristaVal) && !sgActions.contains(findActionSG(BREW_TEA))) {
+        if (!state.get(teaLoc).equals(null) && !sgActions.contains(findActionSG(BREW_TEA))) {
             sgActions.add(0, findActionSG(BREW_TEA));
         }
 
