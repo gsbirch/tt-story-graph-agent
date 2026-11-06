@@ -27,7 +27,7 @@ public class StoryGraphAgentFactory extends ClientFactory {
     
     @Override
     public String toString() {
-        return "Story Graph Agent Factory";
+        return "Tutorial Agent Factory";
     }
     
     @Override

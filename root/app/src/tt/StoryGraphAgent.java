@@ -68,7 +68,7 @@ public class StoryGraphAgent extends Client {
 	 * @param delay the max milliseconds to wait before taking a turn
 	 */
 	private StoryGraphAgent(String url, int port, Random random, long delay) {
-		super("storygraph", null, null, null, url, port);
+		super("tutorial", "tutorial", null, null, url, port);
 		this.random = random;
 		this.delay = delay;
 	}
@@ -107,7 +107,7 @@ public class StoryGraphAgent extends Client {
 	
 	@Override
 	public String toString() {
-		return "Story Graph Agent " + id;
+		return "Tutorial Agent " + id;
 	}
 	
 	@Override
