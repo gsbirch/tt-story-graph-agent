@@ -55,7 +55,9 @@ public class StoryGraphAgent extends Client {
 	private final Random random;
 
 	/** A helpful interface to the used story graph. */
-	public StoryGraphView sgv;
+	public GameMasterBehavior gm;
+	
+	public PlayerBehavior p;
 	
 	/**
 	 * Creates a new random agent with the given settings.
@@ -116,32 +118,32 @@ public class StoryGraphAgent extends Client {
 	@Override
 	protected void onStart(World world, Role role, State state) {
 		System.out.println(this + " has started its session as the " + role + " in world \"" + world.getName() + "\".");
-		sgv = new StoryGraphView("tutorial.zip", "tutorial-player-decision.zip", world.getActions());
+		if (getRole() == Role.GAME_MASTER)
+			gm = new GameMasterBehavior("tutorial-game-master.zip", world.getActions());
+		if (getRole() == Role.PLAYER)
+			p = new PlayerBehavior("tutorial-player.zip", world.getActions(), world);
 	}
 	
 	@Override
 	protected int onChoice(Status status) {
-		System.out.print("My possible actions are: ");
-        for (var act : status.getChoices()) {
-            System.out.print(act + ", ");
-        }
-        System.out.println("");
-		if (isProposal(status))
-			return sgv.allowProposal(cleanHistory(), getRole(), getHistory().get(getHistory().size() - 1));
-		Action toTake = sgv.recommendAction(cleanHistory(), getRole());
-		int i = 0;
-		for (;i < getChoices().size(); i++) {
-			Turn candidate = getChoices().get(i);
-			if (candidate.action.equals(toTake)) break;
+		if (getRole() == Role.GAME_MASTER) {
+			if (isProposal(status))
+				return gm.allowProposal(cleanHistory(), getRole(), getHistory().get(getHistory().size() - 1));
+			int toTake = gm.recommendAction(cleanHistory(), getRole(), getChoices());
+			return toTake;
+		} 
+		else if (getRole() == Role.PLAYER) {
+			if (isProposal(status))
+				return p.allowProposal(cleanHistory(), getRole(), getHistory().get(getHistory().size() - 1), getState());
+			int toTake = p.recommendAction(cleanHistory(), getRole(), getChoices(), getState());
+			return toTake;
 		}
-		System.out.println();
-		return i;
+		return getChoices().size() - 1;
 	}
 
 	private List<Turn> cleanHistory() {
 		List<Turn> clean = new ArrayList<Turn>();
 		for (var t : getHistory()) {
-			System.out.println(t);
 			if (t.type.equals(Turn.Type.SUCCEED)) {
 				clean.add(t);
 			}
